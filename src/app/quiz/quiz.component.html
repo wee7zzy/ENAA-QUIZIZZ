@@ -1,0 +1,47 @@
+<div class="container mx-auto px-4 py-6 min-h-screen">
+  <div class="w-full max-w-md mx-auto space-y-8 bg-white/80 shadow-xl rounded-2xl p-6 backdrop-blur-md border border-white/30 transform hover:scale-[1.02] transition-all duration-300 animate-fade-in">
+
+    <!-- Loading -->
+    <div *ngIf="questions.length === 0" class="text-center text-gray-500 animate-pulse text-lg">
+      🔄 Loading questions...
+    </div>
+
+    <!-- Quiz Question Section -->
+    <div *ngIf="questions.length > 0 && currentQuestionIndex < questions.length">
+      
+      <!-- Top Info Bar -->
+      <div class="flex justify-between items-center mb-4 text-sm font-semibold text-gray-800">
+        <div>Question {{ currentQuestionIndex + 1 }} / {{ questions.length }}</div>
+        <div class="text-blue-600 transition-all duration-300 animate-pulse">🏆 Score: {{ score }}</div>
+        <div *ngIf="timedMode" class="text-red-500 font-bold animate-bounce">⏱ {{ timeLeft }}s</div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
+        <div
+          class="h-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-500"
+          [style.width.%]="(currentQuestionIndex / questions.length) * 100">
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 animate-slide-in">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800" [innerHTML]="currentQuestion?.question"></h2>
+
+        <div class="grid grid-cols-1 gap-3">
+          <button
+            *ngFor="let answer of allAnswers"
+            (click)="submitAnswer(answer)"
+            class="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform duration-200 transform hover:scale-105 active:scale-95"
+            [innerHTML]="answer">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completion Message -->
+    <div *ngIf="questions.length > 0 && currentQuestionIndex >= questions.length" class="text-center">
+      <p class="text-lg text-gray-700 animate-bounce">🎉 Quiz completed! Redirecting to results...</p>
+    </div>
+  </div>
+</div>
